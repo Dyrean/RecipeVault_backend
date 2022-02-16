@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Recipe {
+  id           String        @id @default(cuid())
+  title        String        @unique
+  servings     Int
+  image        String
+  summary      String
+  dishTypes    DishTypes[]
+  instructions Instructions?
+}
+
+model DishTypes {
+  id       String  @id @default(cuid())
+  dish     String
+  recipe   Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId String?
+}
+
+model Instructions {
+  id       String  @id @default(cuid())
+  steps    Steps[]
+  recipe   Recipe  @relation(fields: [recipeId], references: [id])
+  recipeId String  @unique
+}
+
+model Steps {
+  id             String        @id @default(cuid())
+  number         Int
+  step           String
+  instructions   Instructions? @relation(fields: [instructionsId], references: [id])
+  instructionsId String?
+  ingredients    Ingredients[]
+  equipments     Equipment[]
+  length         Int?
+  lengthType     String?
+}
+
+model Ingredients {
+  id      String  @id @default(cuid())
+  name    String
+  image   String?
+  steps   Steps?  @relation(fields: [stepsId], references: [id])
+  stepsId String?
+  amount  Float
+  unit    String
+}
+
+model Equipment {
+  id                String  @id @default(cuid())
+  name              String
+  image             String?
+  steps             Steps?  @relation(fields: [stepsId], references: [id])
+  stepsId           String?
+  temperatureNumber Int?
+  temperatureUnit   String?
+}
