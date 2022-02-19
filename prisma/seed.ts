@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 const recipeData = [
   {
-    title: "Dulce De Leche Cheesecake",
+    title: "Dulce De Leche Cheesecake3",
     servings: 10,
     image: "https://spoonacular.com/recipeImages/641730-556x370.jpg",
     summary:

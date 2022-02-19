@@ -3,51 +3,21 @@ import express from "express";
 
 const prisma = new PrismaClient();
 const app = express();
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/api/recipe", async (req, res) => {
   const recipes = await prisma.recipe.findMany({
-    select: {
-      id: true,
-      title: true,
-      servings: true,
-      image: true,
-      summary: true,
-      dishTypes: {
-        select: {
-          id: true,
-          dish: true,
-        },
-      },
+    include: {
+      dishTypes: true,
       instructions: {
-        select: {
-          id: true,
+        include: {
           steps: {
-            select: {
-              id: true,
-              number: true,
-              step: true,
-              ingredients: {
-                select: {
-                  id: true,
-                  name: true,
-                  image: true,
-                  amount: true,
-                  unit: true,
-                },
-              },
-              equipments: {
-                select: {
-                  id: true,
-                  name: true,
-                  image: true,
-                  temperatureNumber: true,
-                  temperatureUnit: true,
-                },
-              },
-              length: true,
-              lengthType: true,
+            include: {
+              ingredients: true,
+              equipments: true,
             },
           },
         },
@@ -66,8 +36,8 @@ app.get(`/api/recipe/:id`, async (req, res) => {
   res.json(post);
 });
 
-const server = app.listen(3000, () =>
+const server = app.listen(port, () =>
   console.log(`
-🚀 Server ready at: http://localhost:3000
+🚀 Server ready at: http://localhost:${port}
 ⭐️ See sample requests: http://pris.ly/e/ts/rest-express#3-using-the-rest-api`)
 );

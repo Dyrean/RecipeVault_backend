@@ -15,6 +15,8 @@ model Recipe {
   summary      String
   dishTypes    DishTypes[]
   instructions Instructions?
+
+  @@index([title])
 }
 
 model DishTypes {
