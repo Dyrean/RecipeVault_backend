@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import express from "express";
+import express, { application } from "express";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -11,13 +11,25 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/api/recipe", async (req, res) => {
   const recipes = await prisma.recipe.findMany({
     include: {
-      dishTypes: true,
+      dishTypes: {
+        include: {
+          dishType: true,
+        },
+      },
       instructions: {
         include: {
           steps: {
             include: {
-              ingredients: true,
-              equipments: true,
+              ingredients: {
+                include: {
+                  ingredient: true,
+                },
+              },
+              equipments: {
+                include: {
+                  equipment: true,
+                },
+              },
             },
           },
         },
@@ -34,6 +46,16 @@ app.get(`/api/recipe/:id`, async (req, res) => {
     where: { id: String(id) },
   });
   res.json(post);
+});
+
+app.get("/api/dishTypes", async (req, res) => {
+  const dishTypes = await prisma.dishTypes.findMany({
+    select: {
+      id: true,
+      dish: true,
+    },
+  });
+  res.json(dishTypes);
 });
 
 const server = app.listen(port, () =>

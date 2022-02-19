@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 const recipeData = [
   {
-    title: "Dulce De Leche Cheesecake3",
+    title: "Dulce De Leche Cheesecake",
     servings: 10,
     image: "https://spoonacular.com/recipeImages/641730-556x370.jpg",
     summary:
@@ -11,7 +11,11 @@ const recipeData = [
     dishTypes: {
       create: [
         {
-          dish: "side dish",
+          dishType: {
+            create: {
+              dish: "side dish",
+            },
+          },
         },
       ],
     },
@@ -25,26 +29,42 @@ const recipeData = [
               ingredients: {
                 create: [
                   {
-                    name: "cookie crumbs",
-                    image: "",
+                    ingredient: {
+                      create: {
+                        name: "cookie crumbs",
+                        image: "",
+                      },
+                    },
                     amount: 1,
                     unit: "tablespoon",
                   },
                   {
-                    name: "cream cheese",
-                    image: "cream-cheese.jpg",
+                    ingredient: {
+                      create: {
+                        name: "cream cheese",
+                        image: "cream-cheese.jpg",
+                      },
+                    },
                     amount: 450,
                     unit: "grams",
                   },
                   {
-                    name: "butter",
-                    image: "butter-sliced.jpg",
+                    ingredient: {
+                      create: {
+                        name: "butter",
+                        image: "butter-sliced.jpg",
+                      },
+                    },
                     amount: 1.5,
                     unit: "sticks",
                   },
                   {
-                    name: "sugar",
-                    image: "sugar-in-bowl.png",
+                    ingredient: {
+                      create: {
+                        name: "sugar",
+                        image: "sugar-in-bowl.png",
+                      },
+                    },
                     amount: 0.5,
                     unit: "cup",
                   },
@@ -53,16 +73,28 @@ const recipeData = [
               equipments: {
                 create: [
                   {
-                    name: "hand mixer",
-                    image: "hand-mixer.png",
+                    equipment: {
+                      create: {
+                        name: "hand mixer",
+                        image: "hand-mixer.png",
+                      },
+                    },
                   },
                   {
-                    name: "mixing bowl",
-                    image: "mixing-bowl.jpg",
+                    equipment: {
+                      create: {
+                        name: "mixing bowl",
+                        image: "mixing-bowl.jpg",
+                      },
+                    },
                   },
                   {
-                    name: "frying pan",
-                    image: "pan.png",
+                    equipment: {
+                      create: {
+                        name: "frying pan",
+                        image: "pan.png",
+                      },
+                    },
                   },
                 ],
               },
@@ -73,32 +105,52 @@ const recipeData = [
               ingredients: {
                 create: [
                   {
-                    name: "dulce de leche",
-                    image: "dulce-de-leche.png",
+                    ingredient: {
+                      create: {
+                        name: "dulce de leche",
+                        image: "dulce-de-leche.png",
+                      },
+                    },
                     amount: 240,
                     unit: "milliliters",
                   },
                   {
-                    name: "lemon juice",
-                    image: "lemon-juice.jpg",
+                    ingredient: {
+                      create: {
+                        name: "lemon juice",
+                        image: "lemon-juice.jpg",
+                      },
+                    },
                     amount: 1,
                     unit: "",
                   },
                   {
-                    name: "corn starch",
-                    image: "white-powder.jpg",
+                    ingredient: {
+                      create: {
+                        name: "corn starch",
+                        image: "white-powder.jpg",
+                      },
+                    },
                     amount: 1,
                     unit: "tablespoon",
                   },
                   {
-                    name: "yogurt",
-                    image: "plain-yogurt.jpg",
+                    ingredient: {
+                      create: {
+                        name: "yogurt",
+                        image: "plain-yogurt.jpg",
+                      },
+                    },
                     amount: 150,
                     unit: "grams",
                   },
                   {
-                    name: "egg",
-                    image: "egg.png",
+                    ingredient: {
+                      create: {
+                        name: "egg",
+                        image: "egg.png",
+                      },
+                    },
                     amount: 2,
                     unit: "",
                   },
@@ -112,14 +164,22 @@ const recipeData = [
               ingredients: {
                 create: [
                   {
-                    name: "cookie crumbs",
-                    image: "",
+                    ingredient: {
+                      create: {
+                        name: "cookie crumbs",
+                        image: "",
+                      },
+                    },
                     amount: 1,
                     unit: "tablespoon",
                   },
                   {
-                    name: "crust",
-                    image: "",
+                    ingredient: {
+                      create: {
+                        name: "crust",
+                        image: "",
+                      },
+                    },
                     amount: 0,
                     unit: "",
                   },
@@ -128,8 +188,12 @@ const recipeData = [
               equipments: {
                 create: [
                   {
-                    name: "oven",
-                    image: "oven.jpg",
+                    equipment: {
+                      create: {
+                        name: "oven",
+                        image: "oven.jpg",
+                      },
+                    },
                     temperatureNumber: 165,
                     temperatureUnit: "Celsius",
                   },

@@ -8,22 +8,30 @@ datasource db {
 }
 
 model Recipe {
-  id           String        @id @default(cuid())
-  title        String        @unique
+  id           String               @id @default(cuid())
+  title        String               @unique
   servings     Int
   image        String
   summary      String
-  dishTypes    DishTypes[]
+  dishTypes    DishTypesOnRecipes[]
   instructions Instructions?
 
   @@index([title])
 }
 
 model DishTypes {
-  id       String  @id @default(cuid())
-  dish     String
-  recipe   Recipe? @relation(fields: [recipeId], references: [id])
-  recipeId String?
+  id                 String               @id @default(cuid())
+  dish               String               @unique
+  DishTypesOnRecipes DishTypesOnRecipes[]
+}
+
+model DishTypesOnRecipes {
+  recipe     Recipe    @relation(fields: [recipeId], references: [id])
+  recipeId   String
+  dishType   DishTypes @relation(fields: [dishTypeId], references: [id])
+  dishTypeId String
+
+  @@id([recipeId, dishTypeId])
 }
 
 model Instructions {
@@ -34,33 +42,49 @@ model Instructions {
 }
 
 model Steps {
-  id             String        @id @default(cuid())
+  id             String              @id @default(cuid())
   number         Int
   step           String
-  instructions   Instructions? @relation(fields: [instructionsId], references: [id])
+  instructions   Instructions?       @relation(fields: [instructionsId], references: [id])
   instructionsId String?
-  ingredients    Ingredients[]
-  equipments     Equipment[]
+  ingredients    StepsOnIngredient[]
+  equipments     StepsOnEquipment[]
   length         Int?
   lengthType     String?
 }
 
+model StepsOnIngredient {
+  step         Steps       @relation(fields: [stepId], references: [id])
+  stepId       String
+  ingredient   Ingredients @relation(fields: [ingredientId], references: [id])
+  ingredientId String
+  amount       Float
+  unit         String
+
+  @@id([stepId, ingredientId])
+}
+
 model Ingredients {
-  id      String  @id @default(cuid())
-  name    String
-  image   String?
-  steps   Steps?  @relation(fields: [stepsId], references: [id])
-  stepsId String?
-  amount  Float
-  unit    String
+  id    String              @id @default(cuid())
+  name  String              @unique
+  image String?
+  steps StepsOnIngredient[]
+}
+
+model StepsOnEquipment {
+  step              Steps     @relation(fields: [stepId], references: [id])
+  stepId            String
+  equipment         Equipment @relation(fields: [equipmentId], references: [id])
+  equipmentId       String
+  temperatureNumber Int?
+  temperatureUnit   String?
+
+  @@id([stepId, equipmentId])
 }
 
 model Equipment {
-  id                String  @id @default(cuid())
-  name              String
-  image             String?
-  steps             Steps?  @relation(fields: [stepsId], references: [id])
-  stepsId           String?
-  temperatureNumber Int?
-  temperatureUnit   String?
+  id    String             @id @default(cuid())
+  name  String             @unique
+  image String?
+  steps StepsOnEquipment[]
 }
